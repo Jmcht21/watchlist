@@ -1,0 +1,66 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Oswald:wght@600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-primary: var(--theme-primary, #0a06f9);
+  --color-background-light: #f5f5f8;
+  --color-background-dark: #050505;
+  --color-surface: #121215;
+  --color-surface-dark: #121215;
+  --color-text-light: #F5F5F7;
+  --color-muted: #8E8E93;
+  --color-muted-dark: #8E8E93;
+  --color-accent: #FFC300;
+  --color-danger: #FF3366;
+
+  --font-display: "Manrope", sans-serif;
+  --font-heading: "Oswald", sans-serif;
+}
+
+@layer base {
+  :root {
+    --theme-primary: #0a06f9;
+    --theme-bg-glow: rgba(10, 6, 249, 0.25);
+    --theme-shadow: rgba(10, 6, 249, 0.5);
+  }
+  .theme-matrix {
+    --theme-primary: #00FF41;
+    --theme-bg-glow: rgba(0, 255, 65, 0.25);
+    --theme-shadow: rgba(0, 255, 65, 0.5);
+  }
+  .theme-pink {
+    --theme-primary: #FF00FF;
+    --theme-bg-glow: rgba(255, 0, 255, 0.25);
+    --theme-shadow: rgba(255, 0, 255, 0.5);
+  }
+  body {
+    @apply bg-background-dark text-text-light;
+  }
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .neon-shadow {
+    filter: drop-shadow(0 0 8px var(--theme-shadow));
+  }
+  .hero-gradient {
+    background: linear-gradient(to top, #050505 0%, rgba(5, 5, 5, 0.8) 30%, rgba(5, 5, 5, 0) 100%);
+  }
+  .glow-primary {
+    box-shadow: 0 0 12px var(--theme-shadow);
+  }
+  .masonry-grid {
+    column-count: 3;
+    column-gap: 8px;
+  }
+  .masonry-item {
+    break-inside: avoid;
+    margin-bottom: 8px;
+  }
+}

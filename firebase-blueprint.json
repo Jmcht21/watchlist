@@ -1,0 +1,130 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile information",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "displayName": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "theme": { "type": "string", "enum": ["cyan", "green", "pink"] },
+        "pinnedMediaIds": { "type": "array", "items": { "type": "string" } },
+        "stats": {
+          "type": "object",
+          "properties": {
+            "movies": { "type": "number" },
+            "episodes": { "type": "number" },
+            "hours": { "type": "number" }
+          }
+        }
+      },
+      "required": ["uid", "displayName"]
+    },
+    "WatchlistItem": {
+      "title": "Watchlist Item",
+      "description": "An item in a user's watchlist",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "mediaId": { "type": "string" },
+        "title": { "type": "string" },
+        "type": { "type": "string", "enum": ["movie", "series", "documentary"] },
+        "posterUrl": { "type": "string" },
+        "status": { "type": "string", "enum": ["watching", "completed", "plan_to_watch"] },
+        "progress": { "type": "string" },
+        "rating": { "type": "number" },
+        "review": { "type": "string" },
+        "genres": { "type": "array", "items": { "type": "string" } },
+        "isFavorite": { "type": "boolean" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "mediaId", "title", "type", "status", "updatedAt"]
+    },
+    "Follow": {
+      "title": "Follow",
+      "description": "A follow relationship between users",
+      "type": "object",
+      "properties": {
+        "followerId": { "type": "string" },
+        "followedId": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["followerId", "followedId", "createdAt"]
+    },
+    "WatchGroup": {
+      "title": "Watch Group",
+      "description": "A group for shared recommendations",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "creatorId": { "type": "string" },
+        "members": { "type": "array", "items": { "type": "string" } },
+        "mediaIds": { "type": "array", "items": { "type": "string" } },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "creatorId", "members", "createdAt"]
+    },
+    "GroupActivity": {
+      "title": "Group Activity",
+      "description": "Activity within a watch group",
+      "type": "object",
+      "properties": {
+        "groupId": { "type": "string" },
+        "userId": { "type": "string" },
+        "mediaId": { "type": "string" },
+        "mediaTitle": { "type": "string" },
+        "posterUrl": { "type": "string" },
+        "type": { "type": "string", "enum": ["add"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["groupId", "userId", "mediaId", "createdAt"]
+    },
+    "Activity": {
+      "title": "Activity",
+      "description": "A social feed activity",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "userDisplayName": { "type": "string" },
+        "userPhotoURL": { "type": "string" },
+        "action": { "type": "string", "enum": ["watched", "finished", "reviewed"] },
+        "mediaTitle": { "type": "string" },
+        "mediaType": { "type": "string" },
+        "posterUrl": { "type": "string" },
+        "rating": { "type": "number" },
+        "review": { "type": "string" },
+        "likes": { "type": "number" },
+        "comments": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "userDisplayName", "action", "mediaTitle", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/User" },
+      "description": "User profiles"
+    },
+    "/watchlist/{itemId}": {
+      "schema": { "$ref": "#/entities/WatchlistItem" },
+      "description": "User watchlist items"
+    },
+    "/activities/{activityId}": {
+      "schema": { "$ref": "#/entities/Activity" },
+      "description": "Social feed activities"
+    },
+    "/follows/{followId}": {
+      "schema": { "$ref": "#/entities/Follow" },
+      "description": "User follow relationships"
+    },
+    "/watchGroups/{groupId}": {
+      "schema": { "$ref": "#/entities/WatchGroup" },
+      "description": "Watch groups"
+    },
+    "/groupActivities/{activityId}": {
+      "schema": { "$ref": "#/entities/GroupActivity" },
+      "description": "Group activities"
+    }
+  }
+}

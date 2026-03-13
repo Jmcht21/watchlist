@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Users, Search, MessageCircle, UserPlus, Loader2, Bell, Plus, X, UserMinus, Users2, Check } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { searchUsersByEmail, followUser, unfollowUser, isFollowing, getFollowedUsers, getWatchGroups, createWatchGroup, WatchGroup, UserProfile, getFriendsActivity, getGroupActivities, WatchlistItem, GroupActivity } from '../services/db';
@@ -7,7 +7,8 @@ import { searchUsersByEmail, followUser, unfollowUser, isFollowing, getFollowedU
 const Social = () => {
   const { user, login } = useAuth();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState('Feed');
+  const location = useLocation();
+  const [activeTab, setActiveTab] = useState(location.pathname === '/groups' ? 'Groupes' : 'Feed');
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const [isSearching, setIsSearching] = useState(false);

@@ -97,11 +97,6 @@ const Search = () => {
       </header>
 
       <main className="flex-1 p-4 flex flex-col gap-3">
-        {!import.meta.env.VITE_TMDB_API_KEY && (
-          <div className="p-4 bg-red-900/30 border border-red-500/50 rounded-lg text-red-200 text-sm text-center">
-            Clé API TMDB manquante. Veuillez configurer VITE_TMDB_API_KEY dans vos variables d'environnement.
-          </div>
-        )}
         
         {loading && <div className="text-center text-muted py-8">Recherche en cours...</div>}
         

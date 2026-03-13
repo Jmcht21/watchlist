@@ -1,27 +1,51 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { User, onAuthStateChanged, signInWithPopup, GoogleAuthProvider, signOut } from 'firebase/auth';
+import { AuthError, User, onAuthStateChanged, signInWithPopup, GoogleAuthProvider, signOut } from 'firebase/auth';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { auth, db } from '../firebase';
 
 interface AuthContextType {
   user: User | null;
   loading: boolean;
+  authError: string | null;
   login: () => Promise<void>;
   logout: () => Promise<void>;
+  clearAuthError: () => void;
 }
 
 const AuthContext = createContext<AuthContextType>({
   user: null,
   loading: true,
+  authError: null,
   login: async () => {},
   logout: async () => {},
+  clearAuthError: () => {},
 });
 
 export const useAuth = () => useContext(AuthContext);
 
+const getFriendlyAuthError = (error: unknown) => {
+  const authError = error as Partial<AuthError> | undefined;
+
+  if (authError?.code === 'auth/unauthorized-domain') {
+    return `Le domaine ${window.location.hostname} n'est pas autorise dans Firebase Authentication. Ajoutez-le dans Firebase Console > Authentication > Settings > Authorized domains.`;
+  }
+
+  if (authError?.code === 'auth/popup-blocked') {
+    return 'La fenetre de connexion a ete bloquee par le navigateur. Reessayez avec un clic utilisateur direct.';
+  }
+
+  if (authError?.code === 'auth/popup-closed-by-user') {
+    return 'La fenetre de connexion a ete fermee avant la fin de l authentification.';
+  }
+
+  return 'Connexion impossible pour le moment.';
+};
+
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [authError, setAuthError] = useState<string | null>(null);
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
@@ -55,11 +79,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   const login = async () => {
+    if (isLoggingIn) return;
+
     const provider = new GoogleAuthProvider();
+    setAuthError(null);
+    setIsLoggingIn(true);
+
     try {
       await signInWithPopup(auth, provider);
     } catch (error) {
       console.error("Error logging in:", error);
+      setAuthError(getFriendlyAuthError(error));
+    } finally {
+      setIsLoggingIn(false);
     }
   };
 
@@ -72,7 +104,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout }}>
+    <AuthContext.Provider value={{ user, loading, authError, login, logout, clearAuthError: () => setAuthError(null) }}>
       {children}
     </AuthContext.Provider>
   );

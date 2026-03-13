@@ -144,12 +144,6 @@ const Home = () => {
           {user && watchlist.length > 0 ? "Reprenez où vous en étiez" : "Tendances du moment"}
         </h2>
         
-        {!import.meta.env.VITE_TMDB_API_KEY && !user && (
-          <div className="p-4 bg-red-900/30 border border-red-500/50 rounded-lg text-red-200 text-sm mb-4">
-            Clé API TMDB manquante. Veuillez configurer VITE_TMDB_API_KEY.
-          </div>
-        )}
-
         <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory no-scrollbar pb-4 -mx-4 px-4">
           {displayItems.map((item: any) => {
             const isWatchlistItem = 'status' in item;

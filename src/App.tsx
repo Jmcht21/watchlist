@@ -15,6 +15,7 @@ import Profile from './pages/Profile';
 import UserProfile from './pages/UserProfile';
 import MediaDetails from './pages/MediaDetails';
 import GroupDetails from './pages/GroupDetails';
+import Settings from './pages/Settings';
 
 export default function App() {
   return (
@@ -25,6 +26,8 @@ export default function App() {
             <Route path="/" element={<Layout />}>
               <Route index element={<Home />} />
               <Route path="social" element={<Social />} />
+              <Route path="groups" element={<Social />} />
+              <Route path="settings" element={<Settings />} />
               <Route path="search" element={<Search />} />
               <Route path="profile" element={<Profile />} />
               <Route path="user/:uid" element={<UserProfile />} />

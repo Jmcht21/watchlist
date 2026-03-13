@@ -337,7 +337,7 @@ const MediaDetails = () => {
         <div className="absolute inset-0 hero-gradient"></div>
       </div>
 
-      <div className="relative min-h-screen parallax-layer-base pt-[35vh] pb-24 overflow-y-auto no-scrollbar">
+      <div className="relative h-full pt-[35vh] pb-16 overflow-y-auto no-scrollbar">
         <div className="px-5">
           <div className="mb-6">
             <div className="flex items-center gap-2 mb-2">

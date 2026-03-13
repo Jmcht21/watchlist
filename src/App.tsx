@@ -18,10 +18,12 @@ import GroupDetails from './pages/GroupDetails';
 import Settings from './pages/Settings';
 
 export default function App() {
+  const routerBase = import.meta.env.BASE_URL;
+
   return (
     <ThemeProvider>
       <AuthProvider>
-        <Router>
+        <Router basename={routerBase}>
           <Routes>
             <Route path="/" element={<Layout />}>
               <Route index element={<Home />} />
